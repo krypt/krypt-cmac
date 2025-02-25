@@ -1,0 +1,27 @@
+name: Publish to RubyGems
+
+on:
+  # Manually publish
+  workflow_dispatch:
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      id-token: write
+
+    # If you configured a GitHub environment on RubyGems, you must use it here.
+    environment: release
+
+    steps:
+      # Set up
+      - uses: actions/checkout@v4
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      # Release
+      - uses: rubygems/release-gem@v1

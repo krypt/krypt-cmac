@@ -1,0 +1,44 @@
+name: Krypt Cmac CI
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: Linter
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+    - name: Install dependencies
+      run: bundle install
+    - name: Linting
+      run: bundle exec rake standard
+  test:
+    runs-on: ubuntu-latest
+    name: Specs Ruby ${{ matrix.ruby }}
+    strategy:
+      matrix:
+        ruby:
+          - '3.2.7'
+          - '3.3.7'
+          - '3.4.2'
+          - 'jruby'
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+        bundler-cache: true
+    - name: Install dependencies
+      run: bundle install
+    - name: Run specs
+      run: bundle exec rake spec
