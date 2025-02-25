@@ -1,0 +1,14 @@
+/.bundle/
+/coverage/
+/pkg/
+/spec/reports/
+/tmp/
+*.rbc
+
+# rspec failure tracking
+.rspec_status
+
+# YARD artifacts
+/.yardoc
+/_yardoc
+/doc/
