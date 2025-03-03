@@ -2,17 +2,17 @@
 
 [![Gem Version](https://badge.fury.io/rb/krypt-cmac.svg)](https://badge.fury.io/rb/krypt-cmac)
 
-First of all, don't use CMAC if you don't have to. Using HMAC is usually faster, more robust and easier to use.
-Use CMAC only if the choice has already been made and now you need something to deal with it.
+First off, don't use CMAC unless you really need to. HMAC is usually faster, more robust, and easier to use.
+Only go for CMAC if it's already been decided and you need to work with it.
 
-Krypt::Cmac provides implementations for all flavours of AES-CMAC algorithm as specified in 
+Krypt::Cmac provides implementations for all versions of the AES-CMAC algorithm as specified in:
 
 - [NIST SP 800-38B](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38b.pdf)
 - [RFC 4493](https://tools.ietf.org/html/rfc4493)
 - [RFC 4494](https://tools.ietf.org/html/rfc4494)
 - [RFC 4615](https://tools.ietf.org/html/rfc4615)
 
-It supports 128, 192, and 256-bit keys, variable length keys and is capable of streaming processing.
+It supports 128, 192, and 256-bit keys, variable length keys, and can handle streaming processing.
 Only AES is supported as the underlying block cipher algorithm. The implementations offer the same
 public API as `OpenSSL::HMAC` except for the `reset` method.
 
@@ -38,7 +38,7 @@ gem install krypt-cmac
 
 ## Usage
 
-### AES-CMAC with 128, 192 or 256 bits (NIST SP 800-38B, RFC 4493) 
+### AES-CMAC with 128, 192 or 256 bits (NIST SP 800-38B, RFC 4493)
 
 When using the default implementation, the size of the key determines the version of AES being used. This
 implies that keys must be either 128, 192 or 256 bits long, resulting in AES-128-CMAC, AES-192-CMAC or
@@ -62,10 +62,9 @@ tag = cmac.digest
 
 ### AES-CMAC-96 (RFC 4494)
 
-To generate CMAC tags that are 96 bits long instead of the default 128 bits, use the `cmac_96` method
-to finalize the MAC computation instead of the usual `digest` method. Note that CMAC-96 tags are simply
-regular tags truncated to 96 bits. If you require any other tag size below 128 bits, you may simply truncate
-the regular tag manually.
+To generate CMAC tags that are 96 bits long instead of the default 128 bits, use `Krypt::Cmac::Cmac96`.
+Note that CMAC-96 tags are simply regular tags truncated to 96 bits. If you need any other tag size
+below 128 bits, you can truncate the regular tag manually.
 
 ```ruby
 require 'krypt/cmac'
@@ -85,11 +84,11 @@ tag = cmac.digest
 
 ### AES-CMAC-PRF-128 (RFC 4615)
 
-If you need to generate CMAC tags from keys that are of varying length and not in the usual 128, 192 or 256 bit
-range, you may use AES-CMAC-PRF-128. It computes a regular AES-CMAC on the key first and uses the 128 bit result
-as the actual key for CMAC computation. You may also want to use it if you require an AES-128-CMAC tag for keys
-that are 192 or 256 bits long. Using regular AES-CMAC with such keys would compute AES-192-CMAC and AES-256-CMAC
-tags respectively.
+If you need to generate CMAC tags from keys of varying lengths and not the usual 128, 192, or 256 bit
+range, use AES-CMAC-PRF-128 as provided by `Krypt::Cmac::Prf128. It computes a regular AES-CMAC on the
+key first and uses the 128 bit result as the actual key for CMAC computation. You might also use it if
+you need an AES-128-CMAC tag for keys that are 192 or 256 bits long. Using regular AES-CMAC with such
+keys would compute AES-192-CMAC and AES-256-CMAC tags respectively.
 
 ```ruby
 require 'krypt/cmac'
@@ -135,9 +134,9 @@ rescue Krypt::Cmac::TagMismatchError => e
 end
 ```
 
-Even though the `verify` method returns `true` on successful verification, the method still raises a
-`Krypt::Cmac::TagMismatchError` on invalid tags. This is to ensure that invalid tags cannot go undetected as they
-would if the verifying code forgot to check for `true` explicitly. 
+Even though the `verify` method returns `true` on successful verification, it still raises a
+`Krypt::Cmac::TagMismatchError` on invalid tags. This ensures that invalid tags cannot go undetected if the
+verifying code forgets to check for `true` explicitly.
 
 ## Development
 
