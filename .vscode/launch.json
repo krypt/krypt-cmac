@@ -1,0 +1,26 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+
+    {
+      "type": "ruby_lsp",
+      "name": "Debug script",
+      "request": "launch",
+      "program": "bundle exec ruby ${file}"
+    },
+    {
+      "type": "ruby_lsp",
+      "name": "Debug rspec",
+      "request": "launch",
+      "program": "bundle exec rspec ${relativeFile}"
+    },
+    {
+      "type": "ruby_lsp",
+      "name": "Attach debugger",
+      "request": "attach"
+    }
+  ]
+}

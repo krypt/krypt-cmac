@@ -6,14 +6,14 @@ module Krypt
     #
     # @example
     #   key = ["0102030405"].pack("H*")
-    #   prf = Krypt::Cmac::Prf128.new(key)
+    #   prf = Krypt::Cmac::CmacPrf128.new(key)
     #   tag = prf.digest("data")
     #
     # @see Krypt::Cmac
     #
     # References:
     # - AES-CMAC-PRF-128 RFC: https://tools.ietf.org/html/rfc4615
-    class Prf128
+    class CmacPrf128
       def initialize(key)
         @key = derive_key(key)
         @cmac = Krypt::Cmac.new(@key)

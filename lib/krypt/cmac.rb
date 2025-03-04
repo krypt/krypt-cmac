@@ -16,7 +16,7 @@ module Krypt
   #
   # If variable length keys such as in AES-CMAC-PRF-128 (RFC 4615) must be supported,
   # or if the MAC shall be computed with AES-128 - regardless of the key length,
-  # {Krypt::Cmac::Prf128} can be used. This class derives a 128-bit key from the
+  # {Krypt::Cmac::CmacPrf128} can be used. This class derives a 128-bit key from the
   # given key using the AES-CMAC algorithm.
   #
   # The CMAC computation can be updated with data in multiple calls to {#update}
@@ -43,7 +43,7 @@ module Krypt
   #   tag = Krypt::Cmac.new(key).update(message).update(message2).digest
   #
   # @see Krypt::Cmac::Cmac96
-  # @see Krypt::Cmac::Prf128
+  # @see Krypt::Cmac::CmacPrf128
   #
   # References:
   # - NIST SP 800-38B: https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38b.pdf
@@ -87,19 +87,21 @@ module Krypt
     # @return [self] The CMAC instance itself, to allow chaining.
     # @raise [InvalidStateError] If the CMAC has already been finalized.
     def update(data)
-      return self if data.nil? || data.empty?
+      return self if data.nil?
       raise InvalidStateError.new("CMAC has already been finalized") if @mac_tag
 
       @buffer << data
+      buffer_len = @buffer.bytesize
+
       # Return early if the buffer does not contain enough data to form a block
-      return self if @buffer.bytesize <= AES_BLOCK_SIZE
+      return self if buffer_len <= AES_BLOCK_SIZE
 
       # Ensure that we do not process the final block yet. The final block is
       # processed in the digest method. This is to ensure that the final block
       # is padded correctly. For now, just process the remaining full blocks.
-      remainder = @buffer.bytesize % AES_BLOCK_SIZE
+      remainder = buffer_len % AES_BLOCK_SIZE
       remainder = AES_BLOCK_SIZE if remainder == 0
-      update_full_blocks(@buffer.slice!(0...-remainder))
+      @aes_cbc.update(@buffer.slice!(0...-remainder))
 
       self # Return self to allow chaining
     end
@@ -193,11 +195,6 @@ module Krypt
       k = shift_left(bytes)
       k.setbyte(-1, k.getbyte(-1) ^ RB) if msb
       k
-    end
-
-    def update_full_blocks(blocks)
-      return if blocks.empty?
-      @aes_cbc.update(blocks)
     end
 
     def pad_last_block(buffer)

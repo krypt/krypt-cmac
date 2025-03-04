@@ -1,0 +1,24 @@
+GIT
+  remote: ../../krypt-cmac
+  revision: 5ebc3f84275b000c5dd236f7a719f5adfa3131c8
+  branch: main
+  specs:
+    krypt-cmac (1.0.1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    benchmark (0.4.0)
+    openssl-cmac (2.0.2)
+
+PLATFORMS
+  ruby
+  x86_64-linux
+
+DEPENDENCIES
+  benchmark (~> 0.4.0)
+  krypt-cmac!
+  openssl-cmac (~> 2.0)
+
+BUNDLED WITH
+   2.6.5

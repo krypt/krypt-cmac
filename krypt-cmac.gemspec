@@ -6,8 +6,11 @@ Gem::Specification.new do |spec|
   spec.authors = ["Martin Boßlet"]
   spec.email = ["martin.bosslet@gmail.com"]
 
-  spec.summary = "AES-CMAC as specified in RFC 4493 and NIST SP 800-38B"
-  spec.description = "An implementation AES-CMAC for 128, 192, and 256 bit keys as specified in NIST SP 800-38B and RFC 4493, capable of streaming processing."
+  spec.summary = "AES-CMAC as specified in NIST SP 800-38B, RFC 4493, RFC 4494 and RFC 4615."
+  spec.description = <<-EOS
+  An implementation of AES-CMAC for 128, 192, and 256 bit keys as specified in NIST SP 800-38B and RFC 4493, capable of streaming processing.
+  Also included is an implementation of AES-CMAC-PRF-128 as specified in RFC 4615 and of CMAC-96 as specified in RFC 4494.
+  EOS
   spec.homepage = "https://github.com/krypt/krypt-cmac"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.0.0"

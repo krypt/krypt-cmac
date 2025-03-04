@@ -67,7 +67,7 @@ RSpec.shared_context "reference samples" do
   end
 
   shared_examples "correct AES-CMAC-PRF-128" do
-    let(:described_class) { Krypt::Cmac::Prf128 }
+    let(:described_class) { Krypt::Cmac::CmacPrf128 }
     include_examples "correct computation"
   end
 end

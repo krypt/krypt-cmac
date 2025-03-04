@@ -85,7 +85,7 @@ tag = cmac.digest
 ### AES-CMAC-PRF-128 (RFC 4615)
 
 If you need to generate CMAC tags from keys of varying lengths and not the usual 128, 192, or 256 bit
-range, use AES-CMAC-PRF-128 as provided by `Krypt::Cmac::Prf128`. It computes a regular AES-CMAC on the
+range, use AES-CMAC-PRF-128 as provided by `Krypt::Cmac::CmacPrf128`. It computes a regular AES-CMAC on the
 key first and uses the 128 bit result as the actual key for CMAC computation. You might also use it if
 you need an AES-128-CMAC tag for keys that are 192 or 256 bits long. Using regular AES-CMAC with such
 keys would compute AES-192-CMAC and AES-256-CMAC tags respectively.
@@ -97,11 +97,11 @@ key = ["2b7e151628aed2a6abf7158809cf4f3c"].pack("H*")
 message = ["6bc1bee22e409f96e93d7e117393172a"].pack("H*")
 
 # AES-CMAC-PRF-128 one-shot computation
-cmac = Krypt::Cmac::Prf128.new(key)
+cmac = Krypt::Cmac::CmacPrf128.new(key)
 tag = cmac.digest(message)
 
 # AES-CMAC-PRF-128 streaming computation
-cmac = Krypt::Cmac::Prf128.new(key)
+cmac = Krypt::Cmac::CmacPrf128.new(key)
 cmac.update(message)
 tag = cmac.digest
 ```
