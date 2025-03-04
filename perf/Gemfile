@@ -1,0 +1,6 @@
+source "https://rubygems.org"
+
+gem "benchmark", "~> 0.4.0"
+
+gem "openssl-cmac", "~> 2.0"
+gem "krypt-cmac", git: "../../krypt-cmac", branch: "main"

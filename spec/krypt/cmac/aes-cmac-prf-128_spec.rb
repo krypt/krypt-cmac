@@ -1,4 +1,4 @@
-RSpec.describe Krypt::Cmac::Prf128 do
+RSpec.describe Krypt::Cmac::CmacPrf128 do
   include_context "String helpers"
   include_context "reference samples"
 
